@@ -1,0 +1,30 @@
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  line-height: 1.6;
+  color: #222;
+}
+
+header h1 a {
+  text-decoration: none;
+  color: #111;
+}
+
+article {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #db3636;
+}
+
+article h2 {
+  text-decoration: none;
+  color: #1a1a1a;
+}
+
+footer {
+  margin-top: 3rem;
+  font-size: 0.85rem;
+  color: #888;
+}

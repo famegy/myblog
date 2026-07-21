@@ -10,4 +10,16 @@
 
 {% empty %}
 <p>No posts yet</p>
-{% endfor %} {% endblock %}
+{% endfor %}
+
+<nav>
+  {% if posts.has_previous %}
+  <a href="?page={{ post.previous_page_number }}"> &laquo; Previous</a>
+  {% endif %}
+
+  <span> Page {{ posts.number }} of {{ posts.paginator.num_page }} </span>
+  {% if posts.has_next %}
+  <a href="?page={{ posts.next_page_number }}">Next &laquo; </a>
+  {% endif %}
+</nav>
+{% endblock %}
