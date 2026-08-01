@@ -1,0 +1,7 @@
+UserCreationForm(request.POST)-binds the submitted data to Django built in form .....which already knows how to validate username uniqueness and password rules.
+form.is_valid()-ruyns all the validfations ...if fails we fall backa and re-render the message with the error message alreay included
+form.save()-saves the user to the database if all validations pass
+login(request, useer)- logs the user in after successful registration
+redirect('post_list)- sends them to the homepage once done **you have to import the login and redirect functions from django.contrib.auth and django.shortcuts respectively.
+{% csrf_token %}- is required in every post form to prevent it crashing due to cross site request forgery attacks. It is a security measure that Django provides to protect against malicious attacks on your website.
+{{ from.as_p }}- renders the form with all fields i.e user password and confirm password wrapped in <p>
