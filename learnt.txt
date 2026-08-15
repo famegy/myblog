@@ -7,3 +7,5 @@ redirect('post_list)- sends them to the homepage once done **you have to import 
 {{ from.as_p }}- renders the form with all fields i.e user password and confirm password wrapped in <p>
 LoginView.as_view(template_name='accounts/login.html')- django built in  view that points out to its own template rather than the inbuilt one.
 LogoutView.as_view(next_page='post_list')- logs the user out and redirects them to the bloghomepage.next_page**takes url name and not row path
+UserCreationForm(request.POST)-This creates a new form of the data.request.POST contains the form which is checked before if it is a POST operation.
+login(request, user)-this tells django "remember this user is now authenticated"
