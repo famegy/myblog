@@ -1,0 +1,97 @@
+from django.core.exceptions import PermissionDenied...>>>This imports PermissionDenied ..that later can say that the user is not allowed to perform a certain action <<<<<
+
+
+@login_required....>>>>>This means that only logged in users can access this 
+
+
+def post_edit(request, slug):.....>>>>This functions receives 2 parameters ...the >>>>>request<<<<< contains HTTP request including :
+              .*who is making the request
+              * whether it is a GET or POST request
+              * submittedform data 
+ the second parameter slug is extracted from the url 
+
+
+
+    post = get_object_or_404(Post, slug=slug)>>>>>>>>>. This searches the Post database for post that matches the slug url .....if it doe snot fing the post an error message is returned 
+
+    if post.author != request.user:...>>>>>checks if the user is the owner of the post.
+
+        raise PermissionDenied("You are not allowed to edit this post.")...>>>>If owner is not ,,,,,an excemption is raised ......python returns 403 as Forbidden 
+
+               @login_required
+                    ↓
+              Is the user logged in?
+                  ↓
+                YES
+                  ↓
+            Does the post exist?
+                  ↓
+                  YES
+                  ↓
+              Is this user the author?
+                    ↓
+                YES → Continue
+                NO  → 403 Forbidden
+
+    if request.method == 'POST':>>>>....Checks if the request method is a POST method 
+
+        form = PostForm(request.POST, instance=post)..>>>>here you are creating a PostForm and giving it the the data that you submitted ........
+
+        >>>>>instance=post tells django that the we are editing post and not creating an new one .....
+        if form.is_valid():....>>..checks if everything is filled in correctly
+
+            form.save()
+            return redirect('post_detail', slug=post.slug)......>>>>>>>>>>>the user is  now sent to the post-details page<<
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, 'blog/post_form.html', {'form': form, 'editing': True})
+
+
+
+
+so this is what happens :
+
+1. @login_required
+        ↓
+   Are you logged in?
+        ↓
+       YES
+        ↓
+2. post = get_object_or_404(...)
+        ↓
+   Find "learning-django"
+        ↓
+   Post found
+        ↓
+3. Is post.author == request.user?
+        ↓
+       YES
+        ↓
+4. Is request.method POST?
+        ↓
+      NO (first visit)
+        ↓
+5. PostForm(instance=post)
+        ↓
+   Fill form with existing data
+        ↓
+6. Render post_form.html
+        ↓
+   User sees the editing form
+
+7. Browser sends POST request
+        ↓
+8. PostForm(request.POST, instance=post)
+        ↓
+9. form.is_valid()
+        ↓
+      YES
+        ↓
+10. form.save()
+        ↓
+    Existing post is updated
+        ↓
+11. redirect('post_detail', slug=post.slug)
+        ↓
+    User sees the updated post

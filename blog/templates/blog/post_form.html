@@ -1,6 +1,8 @@
 {% extends "blog/base.html" %}
 
-{% block title %}Write a Post {% endblock %}
+{% block title %}
+  {% if editing %}Edit Post{% else %}Write a Post{% endif %}
+{% endblock %}
 
 {% block content %}
 
@@ -9,7 +11,7 @@
 <form method='post'>
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Publish</button>
+  <button type="submit">{% if editing %}Save Changes{% else %}Publish{% endif %}</button>
 </form>
 
 

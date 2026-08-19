@@ -9,3 +9,4 @@ LoginView.as_view(template_name='accounts/login.html')- django built in  view th
 LogoutView.as_view(next_page='post_list')- logs the user out and redirects them to the bloghomepage.next_page**takes url name and not row path
 UserCreationForm(request.POST)-This creates a new form of the data.request.POST contains the form which is checked before if it is a POST operation.
 login(request, user)-this tells django "remember this user is now authenticated"
+{% if form.non_field_errors %}-contains errors that apply to the whole form rather than a partcular field.
