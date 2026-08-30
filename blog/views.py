@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Post
+from .models import Post, Category
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm
@@ -71,4 +71,10 @@ def post_delete(request, slug):
         return redirect('post_list')
     
     return render(request, 'blog/post_confirm_delete.html', {'post': post})
+
+def category_detail(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    posts = Post.objects.filter(category=category, is_published=True).order_by('-published_at')
+    
+    return render(request, 'blog/category_detail.html', {'category': category, 'posts': posts})
             

@@ -1,7 +1,13 @@
 from django.contrib import admin
-from .models import Post 
+from .models import Post, Category
 
 # Register your model
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+    prepopulated_field = {'slug': ('name', )}
+
 @admin.register(Post)
 class Postadmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'created_at', 'updated_at', 'published_at', 'is_published')

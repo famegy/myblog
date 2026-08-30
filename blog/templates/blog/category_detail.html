@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+  <h2>Category {{ category.name }}</h2>
+
+  {% for post in posts %}
+    <article>
+      <h2>
+        <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+        <p>By {{ post.author }} on {{ post.published_at|date:"F j, Y" }}</p>
+        <p>{{ post.content|truncatewords:30 }}</p>
+      </h2>
+    </article>
+  
+  {% empty %}
+    <p>No posts in this category yet </p>
+  {% endfor %}
+{% endblock %}

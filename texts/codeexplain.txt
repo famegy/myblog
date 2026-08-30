@@ -1,3 +1,5 @@
+##code 1........explained by samuel giks......
+
 from django.core.exceptions import PermissionDenied...>>>This imports PermissionDenied ..that later can say that the user is not allowed to perform a certain action <<<<<
 
 
@@ -95,3 +97,56 @@ so this is what happens :
 11. redirect('post_detail', slug=post.slug)
         ↓
     User sees the updated post
+
+
+##code 2.........
+
+
+from django.utils.text import slugify...>>>>>slugify converts text into a user friendly url eg(samuel giks) becomes samuel-giks..<<<<<
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Categories'......>>>>This tells django what the plural name should be......verbose_name_plural is built in in django meta class thet tells django the plural so we are not creating it a fresh here
+
+
+        ordering = ['name']...>>>>This tells django to retrieve category ordered by their name 
+
+    def __str__(self):....>>>this shows how category objects should be represented as a string ....<<<<<
+        return self.name...>>>>self is the current category object ....so object will be represented by the category object name
+
+    def save(self, *args, **kwargs):...>>>>This overides the save method...here you are customizing what happens when the category is saved .....The *args and **kwargs allows django to pass the normal arguments to the original save() method 
+
+
+        if not self.slug:....>>>>>This checks if slug exists..<<
+            self.slug = slugify(self.name)>....>>>if the slug does not exist which means that the author left it blank, then this generates a slug for it using the category name 
+        super().save(*args, **kwargs).....>>>>**remember we had overode the save() method above ...now this tells django that it can now perform the normal database save after all the above has been sorted....<<<<
+
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug': self.slug})......>>>>>now returns the url .....reverse however has to be imported........
+
+
+        User creates category
+                ↓
+        Name = "Django Tutorials"
+                ↓
+        slug is empty
+                ↓
+        save() is called
+                ↓
+        slugify("Django Tutorials")
+                ↓
+        "django-tutorials"
+                ↓
+        Save to database
+                ↓
+        Category:
+        name = "Django Tutorials"
+        slug = "django-tutorials"
+                ↓
+        get_absolute_url()
+                ↓
+        /categories/django-tutorials/

@@ -6,5 +6,6 @@ urlpatterns = [
   path('new/', views.post_create, name='post_create'),
   path('<slug:slug>/edit/', views.post_edit, name='post_edit'),
   path('<slug:slug>/delete/', views.post_delete, name='post_delete'),
-  path('<slug:slug>/', views.post_detail, name='post_detail')
+  path('<slug:slug>/', views.post_detail, name='post_detail'),
+  path('category/<slug:slug>', views.category_detail, name='category_detail')
 ]

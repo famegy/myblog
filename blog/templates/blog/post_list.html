@@ -4,7 +4,11 @@
   <h2>
     <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
   </h2>
-  <p>By {{post.author}} on {{ post.published_at|date:"F j, Y"}}</p>
+  <p>By {{post.author}} on {{ post.published_at|date:"F j, Y"}}
+    {% if post.category %}
+      <a href="{% url 'category_detail' post.category.slug %}">{{ post.category.name }}</a>
+    {% endif %}
+  </p>
   <p>{{ post.content|truncatewords:30 }}</p>
 </article>
 
