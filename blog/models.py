@@ -26,6 +26,28 @@ class Category(models.Model):
         
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
+    
+    
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    
+    class Meta:
+        ordering = ['name']
+        
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+            
+        super().save(*args, **kwargs)
+        
+        
+    def get_absolute_url(self):
+        return reverse("tag_detail", kwargs={"slug": self.slug})
+    
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -37,3 +59,4 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(default=timezone.now)
     is_published = models.BooleanField(default=True)
+    tags = models.ManyToManyField(Tag, blank=True, related_name='posts')

@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}#{{ tag,name }}{% endblock %}
+
+{% block content %}
+
+<h2>Tag: {{ tag.name}}</h2>
+
+{% for post in posts %}
+
+<article>
+  <h2>
+    <a href="{% url 'post_detail' post.slug %}">{{post.title}}</a>
+  </h2>
+
+  <p>By {{post.author}} on {{ published_at|date:"F j, Y" }}</p>
+  <p>{{ post.content|truncatewords:30 }}</p>
+</article>
+
+{% empty %}
+<p>No posts yet </p>
+
+{% endfor %}
+
+{% endblock %}

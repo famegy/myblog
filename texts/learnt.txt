@@ -10,3 +10,7 @@ LogoutView.as_view(next_page='post_list')- logs the user out and redirects them 
 UserCreationForm(request.POST)-This creates a new form of the data.request.POST contains the form which is checked before if it is a POST operation.
 login(request, user)-this tells django "remember this user is now authenticated"
 {% if form.non_field_errors %}-contains errors that apply to the whole form rather than a partcular field.
+ManyToManyField - unlike ForeignKey a ManyToManyField does not add a column to the related post at all.Instead django creates a hidden seperate table behind the tyable to store pair of (post_id, tag_id)-one row post association 
+prepopulated_fields = {('slug', ('name',))} - is a django admin setting that automatically fills in the slug field based on the value entered on the name field..
+filter_horizontal = ('tags',) - this is specific to many-to-many field in the admin. Without it django shows a plain multi-selected box(hard to use with many tags ). filter_horizontal gives you much nicer two-column widger : available tags on the left , elected tags oin the right, with search arrow button to move...
+post.tags.all - since tags ia a many to many field post.tags is a manager (similar to post.objects),and .all() gets every tag attached to this post.

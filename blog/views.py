@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Post, Category
+from .models import Post, Category, Tag
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm
@@ -77,4 +77,10 @@ def category_detail(request, slug):
     posts = Post.objects.filter(category=category, is_published=True).order_by('-published_at')
     
     return render(request, 'blog/category_detail.html', {'category': category, 'posts': posts})
+
+def tag_detail(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    posts = Post.objects.filter(tags=tag, is_published=True).order_by('-published_at')
+    
+    return render(request, 'blog/tag_detail.html', {'tag': tag, 'posts': posts})
             
