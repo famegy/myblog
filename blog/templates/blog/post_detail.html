@@ -15,7 +15,7 @@
 
   {% if user == post.author %}
     <p class="edit"> 
-      <a href="{% url 'post_edit' post.slug %}">Edit this post<a/>
+      <a href="{% url 'post_edit' post.slug %}">Edit this post</a>
     
       <a href="{% url 'post_delete' post.slug %}">Delete this post</a>
     </p>

@@ -150,3 +150,9 @@ class Category(models.Model):
         get_absolute_url()
                 ↓
         /categories/django-tutorials/
+
+MEDIA_URL = 'media/'- this is the actial folder on the disc where files get saved
+MEDIA_ROOT = BASE_DIR / 'media'-- this is the URL prefix used to serve those files back to the browser example .......(an image saved at media/post_image/sunset.jpg become accessible at /media/post_image/sunset.jpeg)
+if settings.DEBUG:<<<<<.....< this tells django to      only excecute the code if django is running in debug/development model
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+Without enctype="multipart/form-data", browsers send forms in a format that cannot carry file data at all — this is a pure HTML/browser requirement, unrelated to Django. If you forget this, you'll get no error, but uploaded images will just never arrive on the server.
