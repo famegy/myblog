@@ -1,6 +1,9 @@
 {% extends 'blog/base.html' %} {% block title %}{{post.title}}{% endblock %}
 {%block content %}
 <article>
+  {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 100%;">
+  {% endif %}
   {% if post.tags.all %}
     <p>
       Tags:
@@ -24,7 +27,19 @@
 
   <h2>{{ post.title }}</h2>
   <p>By {{post.author}} on {{post.published_at|date:"F j, Y"}}</p>
-  <p>{{ post.content|linebreaks }}</p>
+  <p>{{ post.content|safe }}</p>
   
+{% if related_posts %}
+    <section>
+      <h3>Related Posts</h3>
+        {% for related in related_posts %}
+         <article>
+          <h4><a href="{% url 'post_detail' related.slug %}">{{ related.title }}</a></h4>
+          <p>{{ related.content|striptags|truncatewords:20 }}</p>
+         </article>
+        {% endfor %}
+        </section>
+{% endif %}
+
 </article>
-{% endblock %}
+{% endblock %} 

@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User 
 from django.utils import timezone 
 from django.urls import reverse
@@ -54,7 +55,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=200, unique=True, help_text="A slug is a short label for something, containing only letters, numbers, underscores or hyphens. They’re generally used in URLs.")
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='posts')
-    content = models.TextField()
+    content = RichTextUploadingField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(default=timezone.now)

@@ -9,7 +9,7 @@
       <a href="{% url 'category_detail' post.category.slug %}">{{ post.category.name }}</a>
     {% endif %}
   </p>
-  <p>{{ post.content|truncatewords:30 }}</p>
+  <p>{{ post.content|striptags|truncatewords:30 }}</p>
 </article>
 
 {% empty %}

@@ -79,8 +79,20 @@ def category_detail(request, slug):
     return render(request, 'blog/category_detail.html', {'category': category, 'posts': posts})
 
 def tag_detail(request, slug):
-    tag = get_object_or_404(Tag, slug=slug)
-    posts = Post.objects.filter(tags=tag, is_published=True).order_by('-published_at')
+    post = get_object_or_404(Post, slug=slug, is_published=True)
     
-    return render(request, 'blog/tag_detail.html', {'tag': tag, 'posts': posts})
+    related_posts = Post.objects.filter(is_published=True).exclude(id=post.id)
+    
+    if post.category:
+        related_posts = related_posts.filter(category=post.category)
+        
+    elif post.tag.exists():
+        related_posts = related_posts.filter(tags__in=post.tag.all()).distinct()
+        
+    else:
+        related_posts = related_posts.none()
+        
+    related_posts = related_posts.order_by('-published_at')[:3]
+    
+    return render(request, 'blog/tag_detail.html',{'post': post, 'related_posts': related_posts})
             

@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'ckeditor_uploader',
     'blog',
     'accounts'
 ]
@@ -123,3 +125,12 @@ LOGIN_REDIRECT_URL = 'post_list'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+CKEDITOR_UPLOAD_PATH = 'ckeditor_uploads/'
+CKEDITOR_CONFIG = {
+    'default': {
+        'toolbar': 'full',
+        'height': 400,
+    }
+}
