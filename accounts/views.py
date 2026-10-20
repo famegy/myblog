@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -21,9 +21,9 @@ def register(request):
    return render(request, 'accounts/register.html', {'form': form})
 
 def author_detail(request, username):
-   author = get_list_or_404(User, username=username)
+   author = get_object_or_404(User, username=username)
    profile, _ = Profile.objects.get_or_create(user=author)
-   posts = Post.objects.filter(author=author, is_publlished=True).order_by('-published_at')
+   posts = Post.objects.filter(author=author, is_published=True).order_by('-published_at')
    return render(request, 'accounts/author_detail.html', {
       'author': author,
       'profile': profile,
