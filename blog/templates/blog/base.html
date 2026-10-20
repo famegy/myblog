@@ -8,7 +8,7 @@
     <h1><a href="{% url 'post_list'%}"> My Blog</a></h1>
     <nav>
       {% if user.is_authenticated %}
-      <span>Hi, {{ user.username }}</span>
+      <span>Hi, <a href="{% url 'author.detail' user.username %}">{{ user.username }}</a></span>
       <a href="{% url 'post_create' %}">Write a Post</a>
 
       <form method="post" action="{% url 'logout' %}" style="display: inline">

@@ -40,6 +40,6 @@
         {% endfor %}
         </section>
 {% endif %}
-
+ <p>By <a href="{% url 'author.detail' post.author.username%}"></a>on {{ post.published_at|date:"F j, Y"}}</p>
 </article>
 {% endblock %} 

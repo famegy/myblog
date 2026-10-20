@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %} {% block title %} My Blog - Home {% endblock %}
-{% block content %} {% for post in posts %}
+{% block content %} 
+{% for post in posts %}
 <article>
   <h2>
     <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
@@ -10,6 +11,7 @@
     {% endif %}
   </p>
   <p>{{ post.content|striptags|truncatewords:30 }}</p>
+  <p>By <a href="{% url 'author.detail' post.author.username%}"></a>on {{ post.published_at|date:"F j, Y"}}</p>
 </article>
 
 {% empty %}

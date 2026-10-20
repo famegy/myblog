@@ -62,3 +62,4 @@ class Post(models.Model):
     is_published = models.BooleanField(default=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    

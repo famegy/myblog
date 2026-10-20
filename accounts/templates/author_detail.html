@@ -1,0 +1,37 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ author.username }} {% endblock %}
+
+{% block content %}
+<section>
+  {% if profile.avator %}
+    <img src="{{ profile.avator.url }}" alt="{{ author.username }}" style="width: 120px; border-radius: 50%;"
+  {% endif %}
+
+  <h2>{{ author.username }}</h2>
+
+  {% if profile.bio %}
+    <p>{{ profile.bio }}</p>
+  {% endif %}
+
+  {% if user == author %}
+    <p>
+      <a href="{% url 'profile_edit' %}">Edit your profile </a>
+    </p>
+  {% endif %}
+</section>
+
+<h3>Posts by {{ author.username }}</h3>
+
+{% for post in posts %}
+  <article>
+    <h4>
+      <a href="{% url 'post_detail post.slug '%}">{{ post.title }}</a>
+    </h4>
+    <p>{{ post.published_at|date:"F j, Y"}}</p>
+    <p>{{ post.content|striptags|truncatewords:30 }}</p> 
+  </article>
+  {% empty %}
+    <p>No posts yet </p> 
+{% endfor %}
+{% endblock %}

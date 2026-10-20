@@ -8,6 +8,8 @@
 
 {% for post in posts %}
 
+ <p>By <a href="{% url 'author.detail' post.author.username%}"></a>on {{ post.published_at|date:"F j, Y"}}</p>
+
 <article>
   {% if post.image %}
     <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 100%;">

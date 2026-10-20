@@ -7,6 +7,7 @@
 
   {% for post in posts %}
     <article>
+      
       <h2>
         <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
         <p>By {{ post.author }} on {{ post.published_at|date:"F j, Y" }}</p>
@@ -14,6 +15,8 @@
       </h2>
     </article>
   
+     <p>By <a href="{% url 'author.detail' post.author.username%}"></a>on {{ post.published_at|date:"F j, Y"}}</p>
+
   {% empty %}
     <p>No posts in this category yet </p>
   {% endfor %}
