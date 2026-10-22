@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from blog.models import Post
 from .models import Profile
 from .forms import ProfileForm
+from django.db.models import Count, Q
 
 # Create your views here.
 def register(request):
@@ -46,4 +47,11 @@ def profile_edit(request):
       form = ProfileForm(instance=profile)
          
    return render(request, 'accounts/profile_edit.html', {'form':form})   
+
+
+def author_list(request):
+   authors = User.objects.annotate(
+      post_count=Count('posts', filter=Q(posts__is_published=True))
+   ).filter(post_count__gt=0).order_by('-post_count', 'username')
+   return render(request, 'accounts/author_list.html', {'authors':authors})
       

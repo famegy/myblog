@@ -11,6 +11,7 @@
   <header class="site-header">
     <a class="brand" href="{% url 'post_list' %}">My Blog</a>
     <nav class="site-nav">
+      <a href="{% url 'author_list' %}">Authors</a>
       {% if user.is_authenticated %}
         <a href="{% url 'post_create' %}">Write a Post</a>
         <a href="{% url 'author_detail' user.username %}">{{ user.username }}</a>

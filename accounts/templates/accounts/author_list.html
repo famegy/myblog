@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Authors{% endblock %}
+
+{% block content %}
+  <h2>Authors</h2>
+  {% for author in authors %}
+  <article>
+    <h3>
+      <a href="{% url 'author_detail' author.username %}">{{ author.username }}</a>
+    </h3>
+    <p>{{ author.post_count }} post {{ author.post_count|pluralize}}</p>
+    {% if author.profile.bio %}
+      <p>{{author.profile.bio|truncatewords:25}}</p> 
+    {% endif %}
+  </article>
+  {% empty %}
+  <p>No authors yet!</p>
+  {% endfor %}
+{% endblock %}

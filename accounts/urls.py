@@ -8,4 +8,5 @@ urlpatterns = [
   path('logout/', auth_views.LogoutView.as_view(next_page='post_list'), name='logout'),
   path('profile/edit', views.profile_edit, name='profile_edit'),
   path('author/<str:username>/', views.author_detail, name='author_detail'),
+  path('authors/', views.author_list, name='author_list'),
 ]
