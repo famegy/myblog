@@ -49,11 +49,14 @@ class Tag(models.Model):
     def get_absolute_url(self):
         return reverse("tag_detail", kwargs={"slug": self.slug})
     
-
+class PostQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(is_published=True, published_at__lte=timezone.now())
+    
 class Post(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, help_text="A slug is a short label for something, containing only letters, numbers, underscores or hyphens. They’re generally used in URLs.")
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Posts')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='posts')
     content = RichTextUploadingField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -62,4 +65,10 @@ class Post(models.Model):
     is_published = models.BooleanField(default=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    objects = PostQuerySet.as_manager()
     
+    @property
+    def is_live(self):
+        return self.is_published and self.published_at <= timezone.now()
+    
+

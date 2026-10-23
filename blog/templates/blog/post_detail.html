@@ -1,9 +1,6 @@
 {% extends 'blog/base.html' %} {% block title %}{{post.title}}{% endblock %}
 {%block content %}
 <article>
-  {% if post.image %}
-    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 100%;">
-  {% endif %}
   {% if post.tags.all %}
     <p>
       Tags:
@@ -23,14 +20,27 @@
       <a href="{% url 'post_delete' post.slug %}">Delete this post</a>
     </p>
   {% endif %}
-
-
+{% if not post.is_live %}
+  <p><em>
+    {% if not post.is_published %}
+      This post is a draft. Only you can see it. Tick "Is published" when you're ready.
+    {% else %}
+      This post is scheduled for {{ post.published_at|date:"F j, Y, g:i A" }}. Only you can see it until then.
+    {% endif %}
+  </em></p>
+{% endif %}
   <h2>{{ post.title }}</h2>
   <p>
   By <a href="{% url 'author_detail' post.author.username %}">{{ post.author }}</a>
   on {{ post.published_at|date:"F j, Y" }}
 </p>
   <p>{{ post.content|safe }}</p>
+
+  <div>{{ post.content|safe }}</div>
+
+{% if post.image %}
+  <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
+{% endif %}
   
 {% if related_posts %}
     <section>

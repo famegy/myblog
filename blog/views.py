@@ -5,20 +5,41 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm
 from django.core.exceptions import PermissionDenied
+from django.http import Http404
 
 
 # Create your views here.
 def post_list(request):
-    posts_qs = Post.objects.filter(is_published=True).order_by('-published_at')
+    posts_qs = Post.objects.published().order_by('-published_at')
     paginator = Paginator(posts_qs, 5) # Show 5 posts per page
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
     return render(request, 'blog/post_list.html', {'posts':posts})
   
 def post_detail(request, slug):
-  post = get_object_or_404(Post, slug=slug, is_published=True)
-  
-  return render(request, 'blog/post_detail.html', {'post': post})
+    post = get_object_or_404(Post, slug=slug)
+
+    if not post.is_live and post.author != request.user:
+        raise Http404
+
+    related_posts = Post.objects.published().exclude(id=post.id)
+
+    if post.category:
+        related_posts = related_posts.filter(category=post.category)
+    elif post.tags.exists():
+        related_posts = related_posts.filter(tags__in=post.tags.all()).distinct()
+    else:
+        related_posts = related_posts.none()
+
+    related_posts = related_posts.order_by('-published_at')[:3]
+
+    return render(request, 'blog/post_detail.html', {'post': post, 'related_posts': related_posts})
+
+
+def tag_detail(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    posts = Post.objects.published().filter(tags=tag).order_by('-published_at')
+    return render(request, 'blog/tag_detail.html', {'tag': tag, 'posts': posts})
 
 
 @login_required
@@ -74,25 +95,11 @@ def post_delete(request, slug):
 
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
-    posts = Post.objects.filter(category=category, is_published=True).order_by('-published_at')
+    posts = Post.objects.published().filter(category=category).order_by('-published_at')
     
     return render(request, 'blog/category_detail.html', {'category': category, 'posts': posts})
 
 def tag_detail(request, slug):
-    post = get_object_or_404(Post, slug=slug, is_published=True)
-    
-    related_posts = Post.objects.filter(is_published=True).exclude(id=post.id)
-    
-    if post.category:
-        related_posts = related_posts.filter(category=post.category)
-        
-    elif post.tag.exists():
-        related_posts = related_posts.filter(tags__in=post.tag.all()).distinct()
-        
-    else:
-        related_posts = related_posts.none()
-        
-    related_posts = related_posts.order_by('-published_at')[:3]
-    
-    return render(request, 'blog/tag_detail.html',{'post': post, 'related_posts': related_posts})
-            
+    tag = get_object_or_404(Tag, slug=slug)
+    posts = Post.objects.published().filter(tags=tag).order_by('-published_at')
+    return render(request, 'blog/tag_detail.html', {'tag': tag, 'posts': posts})

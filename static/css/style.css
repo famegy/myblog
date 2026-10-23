@@ -97,3 +97,34 @@ footer {
   font-size: 0.85rem;
   color: var(--muted);
 }
+
+.post-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.post-image {
+  display: block;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+/* On the list page, keep the preview image a sensible size */
+.post-list-image {
+  display: block;
+  max-width: 100%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin-top: 1rem;
+  border-radius: 8px;
+}

@@ -9,7 +9,7 @@
     <h3>
       <a href="{% url 'author_detail' author.username %}">{{ author.username }}</a>
     </h3>
-    <p>{{ author.post_count }} post {{ author.post_count|pluralize}}</p>
+    <p>{{ author.post_count }} post{{ author.post_count|pluralize}}</p>
     {% if author.profile.bio %}
       <p>{{author.profile.bio|truncatewords:25}}</p> 
     {% endif %}

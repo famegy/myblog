@@ -1,5 +1,8 @@
 {% extends 'blog/base.html' %} {% block title %} My Blog - Home {% endblock %}
 {% block content %} 
+{% if post.image %}
+  <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 200px;">
+{% endif %}
 {% for post in posts %}
 <article>
   <h2>
@@ -11,7 +14,12 @@
     {% if post.category %}
       · <a href="{% url 'category_detail' post.category.slug %}">{{ post.category.name }}</a>
     {% endif %}
+  </p>
   <p>{{ post.content|striptags|truncatewords:30 }}</p>
+
+  {% if post.image %}
+  <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-list-image">
+{% endif %}
 </article>
 
 {% empty %}

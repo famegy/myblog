@@ -7,6 +7,7 @@ from blog.models import Post
 from .models import Profile
 from .forms import ProfileForm
 from django.db.models import Count, Q
+from django.utils import timezone
 
 # Create your views here.
 def register(request):
@@ -24,7 +25,7 @@ def register(request):
 def author_detail(request, username):
    author = get_object_or_404(User, username=username)
    profile, _ = Profile.objects.get_or_create(user=author)
-   posts = Post.objects.filter(author=author, is_published=True).order_by('-published_at')
+   posts = Post.objects.published().filter(author=author).order_by('-published_at')
    return render(request, 'accounts/author_detail.html', {
       'author': author,
       'profile': profile,
@@ -51,7 +52,7 @@ def profile_edit(request):
 
 def author_list(request):
    authors = User.objects.annotate(
-      post_count=Count('posts', filter=Q(posts__is_published=True))
+      post_count=Count('posts', filter=Q(posts__is_published=True, posts__published_at__lte=timezone.now()))
    ).filter(post_count__gt=0).order_by('-post_count', 'username')
    return render(request, 'accounts/author_list.html', {'authors':authors})
       
